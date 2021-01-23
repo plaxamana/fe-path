@@ -8,6 +8,27 @@ let width = 10
 let score = 0
 let intervalTime = 1000
 let speed = 0.9
+let timerId = 0
+let appleIndex = 0
+
+const startGame = () => {
+    // remove the snake
+    currentSnake.forEach(index => squares[index].classList.remove('snake'))
+    // remove the apple
+    squares[appleIndex].classList.remove('apple')
+    clearInterval(timerId)
+    currentSnake = [2,1,0]
+    score = 0
+    // re add new score to browser
+    scoreDisplay.textContent = score
+    direction = 1
+    intervalTime = 1000
+    speed = 0.9
+    generateApple()
+    // re-add the class of snake to our new currentSnake
+    currentSnake.forEach(index => squares[index].classList.add('snake'))
+    timerId = setInterval(move, intervalTime)
+}
 
 const createGrid = () => {
     // create 100 of these elements
@@ -62,7 +83,7 @@ const move = () => {
         // grow snake array
         currentSnake.push(tail)
         // generate a new apple
-        generateApples()
+        generateApple()
         // add one to the score
         score++
         // display score
@@ -79,21 +100,20 @@ const move = () => {
     squares[currentSnake[0]].classList.add('snake')
 }
 
-move();
 
-let timerId = setInterval(move, intervalTime)
 
-const generateApples = () => {
-    let appleIndex;
+
+
+const generateApple = () => {
+
     do {
         // generate a random number
         appleIndex = Math.floor(Math.random() * squares.length)
     } while (squares[appleIndex].classList.contains('snake'))
     squares[appleIndex].classList.add('apple')
 }
-generateApples();
+generateApple();
 
-// 39 is right arrow
 // 38 is for up arrow
 // 37 is for left arrow
 // 40 is for the down arrow
@@ -101,18 +121,22 @@ generateApples();
 const control = (e) => {
     // if right arrow is pressed
     if (e.keyCode === 39) {
-
         direction = 1
+
+    // if up arrow is pressed
     } else if (e.keyCode === 38) {
-
         direction = -width
+
+    // if the left arrow is pressed
     } else if (e.keyCode === 37) {
-
         direction = -1
-    } else if (e.keyCode === 40){
 
+    // if the down arrow is pressed
+    } else if (e.keyCode === 40){
         direction = +width
     }
 }
 
 document.addEventListener('keydown', control)
+
+startBtn.addEventListener('click', startGame)

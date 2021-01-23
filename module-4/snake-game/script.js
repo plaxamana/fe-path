@@ -1,10 +1,13 @@
 const grid = document.querySelector('.grid')
 const startBtn = document.getElementById('start')
-const score = document.getElementById('score')
+const scoreDisplay = document.getElementById('score')
 let squares = []
 let currentSnake = [2,1,0]
 let direction = 1
 let width = 10
+let score = 0
+let intervalTime = 1000
+let speed = 0.9
 
 const createGrid = () => {
     // create 100 of these elements
@@ -61,8 +64,13 @@ const move = () => {
         // generate a new apple
         generateApples()
         // add one to the score
-
+        score++
+        // display score
+        scoreDisplay.textContent = score
         // speed up our snake
+        clearInterval(timerId)
+        intervalTime = intervalTime * speed
+        timerId = setInterval(move, intervalTime)
     }
 
 
@@ -73,7 +81,7 @@ const move = () => {
 
 move();
 
-let timerId = setInterval(move, 500)
+let timerId = setInterval(move, intervalTime)
 
 const generateApples = () => {
     let appleIndex;
@@ -93,16 +101,16 @@ generateApples();
 const control = (e) => {
     // if right arrow is pressed
     if (e.keyCode === 39) {
-        console.log('right pressed')
+
         direction = 1
     } else if (e.keyCode === 38) {
-        console.log('up pressed')
+
         direction = -width
     } else if (e.keyCode === 37) {
-        console.log('left pressed')
+
         direction = -1
     } else if (e.keyCode === 40){
-        console.log('down pressed')
+
         direction = +width
     }
 }

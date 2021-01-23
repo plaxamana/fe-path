@@ -27,11 +27,13 @@ createGrid();
 currentSnake.forEach(index => squares[index].classList.add('snake'))
 
 const move = () => {
+    // check if the snake has collided with the wall
     if (
-        (currentSnake[0] + width >= 100 && direction === 10) || // if snake has hit bottom
-        (currentSnake[0] % 10 === 9) || // if snake has hit right wall
-        (currentSnake[0] % 10 === 0) || // if snake has hit left wall
-        (currentSnake[0] - width < 0 && direction === -10)// if snake has hit top 
+        (currentSnake[0] + width >= width*width && direction === width) || // if snake has hit bottom
+        (currentSnake[0] % 10 === width-1 && direction === 1) || // if snake has hit right wall
+        (currentSnake[0] % 10 === 0 && direction === -1) || // if snake has hit left wall
+        (currentSnake[0] - width < 0 && direction === -width) || // if snake has hit top 
+        squares[currentSnake[0] + direction].classList.contains('snake') // if the snake collides with itself
     )
     return clearInterval(timerId)
 
@@ -47,12 +49,41 @@ const move = () => {
     // const head = currentSnake.unshift(currentSnake[0] + direction)
 
     // add styling to see it
+
+    // deal with snake head eating apple
+    if(squares[currentSnake[0]].classList.contains('apple')) {
+        // remove the class of apple
+        squares[currentSnake[0]].classList.remove('apple')
+        // grow snake tail +1 by adding snake class
+        squares[tail].classList.add('snake')
+        // grow snake array
+        currentSnake.push(tail)
+        // generate a new apple
+        generateApples()
+        // add one to the score
+
+        // speed up our snake
+    }
+
+
+
+
     squares[currentSnake[0]].classList.add('snake')
 }
 
 move();
 
 let timerId = setInterval(move, 500)
+
+const generateApples = () => {
+    let appleIndex;
+    do {
+        // generate a random number
+        appleIndex = Math.floor(Math.random() * squares.length)
+    } while (squares[appleIndex].classList.contains('snake'))
+    squares[appleIndex].classList.add('apple')
+}
+generateApples();
 
 // 39 is right arrow
 // 38 is for up arrow

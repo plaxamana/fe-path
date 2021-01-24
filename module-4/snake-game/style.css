@@ -1,20 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap');
+
 html,
 body {
-    margin: 10;
-    padding: 10;
+    display: grid;
+    min-height: 100vh;
+    place-content: center;
+    text-align: center;
+    font-family: 'Poppins';
+    background: url(img/papyrus.png);
+    overflow-y: hidden;
+}
+
+h1 {
+    font-weight: 800;
+    font-size: 3rem;
+}
+
+button {
+    font-size: 1.25rem;
+    font-weight: 800;
+    border: none;
+    padding: .5em 1.25em;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+    background: linear-gradient(90deg, hsla(0, 100%, 67%, 1) 0%, hsla(0, 100%, 89%, 1) 100%);
 }
 
 .grid {
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     width: 200px;
     height: 200px;
     border: 2px solid black;
+    margin-bottom: 30%;
 }
 
 .square {
     width: 20px;
     height: 20px;
+    background: rgba(123, 239, 178, 0.2)
 }
 
 .snake {
@@ -22,5 +46,9 @@ body {
 }
 
 .apple {
-    background: blue;
+    background: rgba(0,0,0,0);
+}
+
+.apple::before {
+    content: '🍎'
 }

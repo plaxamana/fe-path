@@ -31,3 +31,23 @@
     border-radius: 7.5px;
     border: none;
 }
+
+.blinky {
+    background: red;
+    border: none;
+}
+
+.pinky {
+    background: pink;
+    border: none;
+}
+
+.inky {
+    background: aqua;
+    border: none;
+}
+
+.clyde {
+    background: orange;
+    border: none;
+}

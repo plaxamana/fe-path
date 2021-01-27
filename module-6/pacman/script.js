@@ -114,7 +114,8 @@ const control = (e) => {
         break
     }
     squares[pacmanCurrentIndex].classList.add('pacman')
-    pacDotEaten();
+    pacDotEaten()
+    powerPalletEaten()
 }
 
 document.addEventListener('keydown', control)
@@ -125,6 +126,24 @@ const pacDotEaten = () => {
         score++
         scoreDisplay.textContent = score
     }
+}
+
+const powerPalletEaten = () => {
+    // if square pacman is in contains a power pallet
+    if(squares[pacmanCurrentIndex].classList.contains('power-pallet')) {
+        // add a score of 10
+        score += 10
+        // remove power-pallet from grid
+        squares[pacmanCurrentIndex].classList.remove('power-pallet')
+
+        // change each of the four ghosts to isScared
+        ghosts.forEach(ghost => ghost.isScared = true)
+        // use setTimeout to unscare ghosts after 10 seconds
+        setTimeout(unscareGhosts,10000)
+    }
+
+
+
 }
 
 class Ghost {
@@ -145,5 +164,47 @@ const ghosts = [
     new Ghost('clyde', 379, 500)
 ]
 
+const moveGhosts = (ghost) => {
+    console.log('moved ghost')
+    const directions = [-1, +1, -width, +width]
+    let direction = directions[Math.floor(Math.random() * directions.length)]
+    console.log(direction)
+    
+    ghost.timerId = setInterval(() => {
+        // if the next square does not contain a wall and does not contain a ghost
+        if(
+            !squares[ghost.currentIndex + direction].classList.contains('wall') && 
+            !squares[ghost.currentIndex + direction].classList.contains('ghost')
+        ) {
+            // remove any ghost
+            squares[ghost.currentIndex].classList.remove(ghost.className)
+            squares[ghost.currentIndex].classList.remove('ghost')
+    
+            // add direction to currentIndex
+            ghost.currentIndex += direction
+    
+            // add ghost class
+            squares[ghost.currentIndex].classList.add(ghost.className)
+            squares[ghost.currentIndex].classList.add('ghost')
+
+        } else {
+            direction = directions[Math.floor(Math.random() * directions.length)]
+        }
+
+    }, ghost.speed)
+}
+
+const unscareGhosts = () => {
+    ghosts.forEach(ghost => ghost.isScared = false)
+}
+
+// clearInterval(ghost.timerId)
+
 // draw my ghosts onto my grid
-ghosts.forEach(ghost => squares[ghost.startIndex].classList.add(ghost.className))
+ghosts.forEach(ghost => {
+    squares[ghost.currentIndex].classList.add(ghost.className)
+    squares[ghost.currentIndex].classList.add('ghost')
+})
+
+// move ghost
+ghosts.forEach(ghost => moveGhosts(ghost))

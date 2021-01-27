@@ -66,20 +66,41 @@ let pacmanCurrentIndex = 490
 squares[pacmanCurrentIndex].classList.add('pacman')
 
 const control = (e) => {
+    squares[pacmanCurrentIndex].classList.remove('pacman')
     switch(e.keyCode) {
+        // down
         case 40:
-            console.log('down')
-            break
+            if(
+                !squares[pacmanCurrentIndex + width].classList.contains('wall') &&
+                pacmanCurrentIndex + width < width * width
+            ) 
+            pacmanCurrentIndex += width
+        break
+        // up
         case 38:
-            console.log('up')
-            break
+            if(
+                !squares[pacmanCurrentIndex - width].classList.contains('wall') &&
+                pacmanCurrentIndex - width >= 0
+            ) 
+            pacmanCurrentIndex -= width
+        break
+        // left
         case 37:
-            console.log('left')
-            break
+            if(
+                !squares[pacmanCurrentIndex - 1].classList.contains('wall') &&
+                pacmanCurrentIndex % width !== 0
+            ) pacmanCurrentIndex -=1
+        break
+        // right
         case 39:
-            console.log('right')
-            break
+            if(
+                !squares[pacmanCurrentIndex + 1].classList.contains('wall') &&
+                pacmanCurrentIndex % width < width-1
+            ) 
+            pacmanCurrentIndex +=1
+        break
     }
+    squares[pacmanCurrentIndex].classList.add('pacman')
 }
 
 document.addEventListener('keydown', control)

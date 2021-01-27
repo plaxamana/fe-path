@@ -1,7 +1,8 @@
 const width = 28
 const grid = document.querySelector('.grid')
-const scoreDisplay = document.getElementById('id')
+const scoreDisplay = document.getElementById('score')
 let squares = []
+let score = 0
 
 // 28 ^ 2 = 784
 
@@ -52,6 +53,8 @@ const createBoard = () => {
             squares[i].classList.add('pac-dot')
         } else if (layout[i] === 1) {
             squares[i].classList.add('wall')
+        } else if (layout[i] === 2) {
+            squares[i].classList.add('ghost-lair')
         } else if (layout[i] === 3){
             squares[i].classList.add('power-pallet')
         }
@@ -71,6 +74,7 @@ const control = (e) => {
         // down
         case 40:
             if(
+                !squares[pacmanCurrentIndex + width].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex + width].classList.contains('wall') &&
                 pacmanCurrentIndex + width < width * width
             ) 
@@ -79,6 +83,7 @@ const control = (e) => {
         // up
         case 38:
             if(
+                !squares[pacmanCurrentIndex - width].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex - width].classList.contains('wall') &&
                 pacmanCurrentIndex - width >= 0
             ) 
@@ -87,20 +92,37 @@ const control = (e) => {
         // left
         case 37:
             if(
+                !squares[pacmanCurrentIndex - 1].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex - 1].classList.contains('wall') &&
                 pacmanCurrentIndex % width !== 0
             ) pacmanCurrentIndex -=1
+            if (pacmanCurrentIndex === 364) {
+                pacmanCurrentIndex = 391
+            }
         break
         // right
         case 39:
             if(
+                !squares[pacmanCurrentIndex + 1].classList.contains('ghost-lair') &&
                 !squares[pacmanCurrentIndex + 1].classList.contains('wall') &&
                 pacmanCurrentIndex % width < width-1
             ) 
             pacmanCurrentIndex +=1
+            if (pacmanCurrentIndex === 391) {
+                pacmanCurrentIndex = 364
+            }
         break
     }
     squares[pacmanCurrentIndex].classList.add('pacman')
+    pacDotEaten();
 }
 
 document.addEventListener('keydown', control)
+
+const pacDotEaten = () => {
+    if(squares[pacmanCurrentIndex].classList.contains('pac-dot')){
+        squares[pacmanCurrentIndex].classList.remove('pac-dot')
+        score++
+        scoreDisplay.textContent = score
+    }
+}

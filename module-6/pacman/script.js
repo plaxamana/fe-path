@@ -205,9 +205,28 @@ const moveGhosts = (ghost) => {
             // re-add classnames of ghost.className and 'ghost' to the ghosts new position
             squares[ghost.currentIndex].classList.add(ghost.className, 'ghost')
         }
-
+        checkForGameOver()
     }, ghost.speed)
 }
+
+// check for game over
+const checkForGameOver = () => {
+    // if the square pacman is in contains a ghost and quare does not contain a scared ghost
+    if (squares[pacmanCurrentIndex].classList.contains('ghost') && 
+        !squares[pacmanCurrentIndex].classList.contains('scared-ghost')
+    ) {
+        // for each ghost - we need to stop it moving
+        ghosts.forEach(ghost => clearInterval(ghost.timerId))
+        // remove eventlistener from our control function
+        document.removeEventListener('keydown', control)
+        // tell user game is over
+        scoreDisplay.innerHTML = 'Game Over'
+    }
+    
+}
+
+// check for win
+
 
 const unscareGhosts = () => {
     ghosts.forEach(ghost => ghost.isScared = false)

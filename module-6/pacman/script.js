@@ -116,6 +116,8 @@ const control = (e) => {
     squares[pacmanCurrentIndex].classList.add('pacman')
     pacDotEaten()
     powerPalletEaten()
+    checkForWin()
+    checkForGameOver()
 }
 
 document.addEventListener('keydown', control)
@@ -206,6 +208,7 @@ const moveGhosts = (ghost) => {
             squares[ghost.currentIndex].classList.add(ghost.className, 'ghost')
         }
         checkForGameOver()
+        
     }, ghost.speed)
 }
 
@@ -226,6 +229,16 @@ const checkForGameOver = () => {
 }
 
 // check for win
+const checkForWin = () => {
+    if (score >= 274) {
+        // stop each ghost moving
+        ghosts.forEach(ghost => clearInterval(ghost.timerId))
+        // remove event listener for control
+        document.removeEventListener('keydown', control)
+        // tell user you've won
+        scoreDisplay.textContent += ' YOU WIN'
+    }
+}
 
 
 const unscareGhosts = () => {

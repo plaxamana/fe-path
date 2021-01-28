@@ -165,10 +165,8 @@ const ghosts = [
 ]
 
 const moveGhosts = (ghost) => {
-    console.log('moved ghost')
     const directions = [-1, +1, -width, +width]
     let direction = directions[Math.floor(Math.random() * directions.length)]
-    console.log(direction)
     
     ghost.timerId = setInterval(() => {
         // if the next square does not contain a wall and does not contain a ghost
@@ -178,7 +176,7 @@ const moveGhosts = (ghost) => {
         ) {
             // remove any ghost
             squares[ghost.currentIndex].classList.remove(ghost.className)
-            squares[ghost.currentIndex].classList.remove('ghost')
+            squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost')
     
             // add direction to currentIndex
             ghost.currentIndex += direction
@@ -189,6 +187,23 @@ const moveGhosts = (ghost) => {
 
         } else {
             direction = directions[Math.floor(Math.random() * directions.length)]
+        }
+
+        // if the ghost is currently scared
+        if (ghost.isScared) {
+            squares[ghost.currentIndex].classList.add('scared-ghost')
+        }
+
+        // if the ghost is currently scared and pacman collides on ghost
+        if(ghost.isScared && squares[ghost.currentIndex].classList.contains('pacman')) {
+            // remove classnames - ghost.className, 'ghost', 'scared-ghost'
+            squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost')
+            // change ghosts currentIndex back to its startIndex
+            ghost.currentIndex = ghost.startIndex
+            // add a score of 100
+            score += 100
+            // re-add classnames of ghost.className and 'ghost' to the ghosts new position
+            squares[ghost.currentIndex].classList.add(ghost.className, 'ghost')
         }
 
     }, ghost.speed)

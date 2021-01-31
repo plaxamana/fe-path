@@ -7,6 +7,7 @@ const getBeers = async () => {
     let beerHtml = ''
     try {
         const beers = await res.json()
+        console.log(beers[0])
         for(let beer of beers) {
             beerHtml += `
             <div class="beer-wrapper card">
@@ -17,6 +18,14 @@ const getBeers = async () => {
                         <span>ABV: ${beer.abv}%</span>
                         <span>IBU: ${beer.ibu}</span>
                     </span>
+                </div>
+                <div class='beer__content'>
+                    <div class='beer__name'>${beer.name}</div>
+                    <div class='beer__tagline'>${beer.tagline}</div>
+                    <div class='beer__description'>${beer.description}</div>
+                    <div class='beer__food-pairing'>
+                        Pair with: ${beer.food_pairing.join(', ')}
+                    </div>
                 </div>
             </div>
             `

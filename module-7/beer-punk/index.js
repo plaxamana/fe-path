@@ -7,7 +7,6 @@ const getBeers = async () => {
     let beerHtml = ''
     try {
         const beers = await res.json()
-        console.log(beers[0])
         for(let beer of beers) {
             beerHtml += `
             <div class="beer-wrapper card">
